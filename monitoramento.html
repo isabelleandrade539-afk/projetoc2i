@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C2i | Demonstração do Processo</title>
+<style>
+:root {
+  --bg: #071321;
+  --panel: #102238;
+  --line: #29415a;
+  --text: #f1f7ff;
+  --muted: #a9bacd;
+  --cyan: #67e8f9;
+  --green: #4ade80;
+  --amber: #fbbf24;
+  --red: #fb7185;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.container { width: min(1100px, 92%); margin: auto; }
+header {
+  border-bottom: 1px solid var(--line);
+  background: #0a1929;
+}
+nav {
+  min-height: 76px; display: flex; align-items: center;
+  justify-content: space-between; gap: 15px;
+}
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 800; }
+.logo {
+  padding: 8px 12px; border-radius: 10px;
+  color: #071321; background: var(--cyan); font-size: 1.2rem;
+}
+nav a { color: var(--muted); text-decoration: none; }
+main { padding: 38px 0 60px; }
+.tag {
+  color: var(--cyan); font-size: .76rem;
+  letter-spacing: .13em; font-weight: 800; text-transform: uppercase;
+}
+h1 { font-size: clamp(2rem, 4vw, 3.2rem); margin: 8px 0; }
+p { color: var(--muted); line-height: 1.65; }
+.intro { max-width: 780px; margin-bottom: 28px; }
+.panel {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 16px; padding: 22px; margin-bottom: 20px;
+}
+.panel-heading {
+  display: flex; justify-content: space-between;
+  align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.panel-heading h2 { margin: 0; font-size: 1.15rem; }
+.demo-label {
+  color: var(--cyan); border: 1px solid #376079;
+  border-radius: 999px; padding: 5px 10px; font-size: .75rem;
+}
+.factory {
+  height: 260px; position: relative; overflow: hidden;
+  margin-top: 18px; border-radius: 12px;
+  background:
+    linear-gradient(#1c3a50 1px,transparent 1px),
+    linear-gradient(90deg,#1c3a50 1px,transparent 1px),
+    #091a2a;
+  background-size: 25px 25px;
+}
+.machine-title {
+  position: absolute; top: 12px; left: 14px;
+  font-size: .75rem; color: var(--muted);
+}
+.belt {
+  position: absolute; left: 6%; right: 6%; top: 62%;
+  height: 18px; border: 2px solid #66869b;
+  border-radius: 5px;
+  background: repeating-linear-gradient(90deg,#294a61 0 14px,#476b80 14px 18px);
+  background-size: 36px 100%;
+  animation: belt 1s linear infinite;
+}
+.leg {
+  position: absolute; top: 70%; width: 9px;
+  height: 35px; background: #38566c;
+}
+.leg.left { left: 16%; }
+.leg.right { right: 16%; }
+.product {
+  position: absolute; left: 8%; top: calc(62% - 39px);
+  width: 29px; height: 33px; border-radius: 5px;
+  background: linear-gradient(135deg,#fde047,#f97316);
+  border: 2px solid #fef08a;
+  animation: product 6s linear infinite;
+}
+.factory.error-demo .product {
+  animation-play-state: paused;
+  left: 49%;
+  border-color: var(--red);
+  background: #be123c;
+}
+@keyframes belt { to { background-position: 36px 0; } }
+@keyframes product { from { left: 8%; } to { left: 85%; } }
+.stages {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 10px; margin-top: 15px;
+}
+.stage {
+  text-align: center; padding: 12px 6px;
+  background: #0a1929; border: 1px solid var(--line);
+  border-radius: 10px; font-size: .83rem;
+}
+.stage span { display: block; font-size: 1.3rem; margin-bottom: 5px; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+button {
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 11px 15px; background: #162d43;
+  color: var(--text); font: inherit; font-weight: 700; cursor: pointer;
+}
+button:hover { border-color: var(--cyan); }
+button[aria-pressed="true"] { border-color: var(--cyan); background: #174054; }
+button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.scenario {
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-top: 18px; padding: 16px; border-radius: 12px;
+  border: 1px solid var(--line); background: #0a1929;
+}
+.scenario-icon { font-size: 1.7rem; }
+.scenario h3 { margin: 0 0 5px; }
+.scenario p { margin: 0; }
+.disclaimer {
+  font-size: .86rem; border-left: 3px solid var(--cyan);
+  padding: 12px 15px; background: #102238;
+  border-radius: 0 8px 8px 0;
+}
+footer { border-top: 1px solid var(--line); padding: 22px 0; }
+footer p { font-size: .82rem; margin: 0; }
+@media(max-width:750px) {
+  .stages { grid-template-columns: repeat(2, 1fr); }
+  .stage:last-child { grid-column: 1 / -1; }
+  nav { padding: 14px 0; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <nav class="container">
+    <a class="brand" href="index.html" style="text-decoration:none">
+      <span class="logo">C2i</span>
+      <span>DEMONSTRAÇÃO DO PROCESSO</span>
+    </a>
+    <a href="index.html">← Página inicial</a>
+  </nav>
+</header>
+
+<main class="container">
+  <div class="intro">
+    <span class="tag">Ambiente demonstrativo</span>
+    <h1>Visualização do fluxo produtivo</h1>
+    <p>
+      Esta página apresenta uma ilustração didática de uma linha de produção.
+      Os cenários são selecionados manualmente para explicar situações hipotéticas.
+      Não existe conexão com equipamentos industriais ou coleta de dados reais.
+    </p>
+  </div>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>Esteira transportadora ilustrativa</h2>
+      <span class="demo-label">SIMULAÇÃO VISUAL</span>
+    </div>
+
+    <div class="factory" id="factory">
+      <span class="machine-title">Representação conceitual da linha</span>
+      <div class="belt"></div>
+      <div class="leg left"></div>
+      <div class="leg right"></div>
+      <div class="product"></div>
+    </div>
+
+    <div class="stages">
+      <div class="stage"><span>📥</span>Alimentação</div>
+      <div class="stage"><span>⚙️</span>Processamento</div>
+      <div class="stage"><span>🔎</span>Inspeção</div>
+      <div class="stage"><span>📦</span>Embalagem</div>
+      <div class="stage"><span>✅</span>Produto final</div>
+    </div>
+
+    <div class="controls" aria-label="Escolher cenário educativo">
+      <button type="button" data-mode="normal" aria-pressed="true">
+        Exemplo de fluxo normal
+      </button>
+      <button type="button" data-mode="error" aria-pressed="false">
+        Exemplo hipotético de interrupção
+      </button>
+    </div>
+
+    <div class="scenario" aria-live="polite">
+      <div class="scenario-icon" id="scenarioIcon">ℹ️</div>
+      <div>
+        <h3 id="scenarioTitle">Exemplo de fluxo normal</h3>
+        <p id="scenarioText">
+          O produto ilustrativo percorre a esteira para representar a sequência
+          entre as etapas. A animação não mede nem avalia a produção.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <span class="tag">Finalidade</span>
+    <h2>Como interpretar a demonstração</h2>
+    <p>
+      O cenário normal ilustra o deslocamento de um item. No exemplo de
+      interrupção, o movimento é pausado manualmente para representar uma
+      situação hipotética, como um item que deixou de avançar.
+    </p>
+    <p class="disclaimer">
+      Importante: o cenário de interrupção não é detectado automaticamente.
+      Não gera alertas operacionais, não identifica causas, não calcula
+      indicadores de desempenho ou confiabilidade e não utiliza dados de máquinas.
+    </p>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <p><strong>C2i</strong> — Projeto demonstrativo educacional · </p>
+  </div>
+</footer>
+
+<script>
+const factory = document.getElementById("factory");
+const scenarioIcon = document.getElementById("scenarioIcon");
+const scenarioTitle = document.getElementById("scenarioTitle");
+const scenarioText = document.getElementById("scenarioText");
+const modeButtons = document.querySelectorAll("[data-mode]");
+
+const scenarios = {
+  normal: {
+    icon: "ℹ️",
+    title: "Exemplo de fluxo normal",
+    text: "O produto ilustrativo percorre a esteira para representar a sequência entre as etapas. A animação não mede nem avalia a produção."
+  },
+  error: {
+    icon: "📦",
+    title: "Exemplo hipotético: item interrompido",
+    text: "Neste cenário educativo, o movimento é pausado manualmente para representar um item que deixou de avançar. É uma ilustração fixa, não uma falha real detectada pelo sistema."
+  }
+};
+
+modeButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    const scenario = scenarios[button.dataset.mode];
+    if (!scenario) return;
+
+    factory.classList.toggle("error-demo", button.dataset.mode === "error");
+    scenarioIcon.textContent = scenario.icon;
+    scenarioTitle.textContent = scenario.title;
+    scenarioText.textContent = scenario.text;
+
+    modeButtons.forEach(item => {
+      item.setAttribute("aria-pressed", String(item === button));
+    });
+  });
+});
+</script>
+</body>
+</html>
